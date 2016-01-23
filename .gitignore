@@ -1,0 +1,6 @@
+# Ignore emacs backup files
+*~
+\#*\#
+
+# Ignore Stack folder and files
+.stack-work
