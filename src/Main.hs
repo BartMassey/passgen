@@ -25,7 +25,8 @@ help = "Usage: passgen OPTION\n" ++
        "  -h this help text\n" ++
        "  -v version of the program"
 
---
+-- Return "Bad input" if String cannot be interpreted as an Int, else call
+-- generatePassword.
 go :: String -> IO String
 go s = case reads s :: [(Int, String)] of
         [(n, _)] -> generatePassword n (return "")
