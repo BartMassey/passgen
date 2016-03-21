@@ -27,20 +27,31 @@ help = "Usage: passgen OPTION\n" ++
 
 -- Return "Bad input" if String cannot be interpreted as an Int, else call
 -- generatePassword.
-go :: String -> IO String
+go :: String -> (IO String, ExitCode)
 go s = case reads s :: [(Int, String)] of
-        [(n, _)] -> generatePassword n (return "")
-        _ -> return "Bad input"
+        [(n, _)] -> (generatePassword n (return ""), ExitSuccess)
+        _ -> (return help, ExitFailure 1)
+
+-- Print the fst String and exit with ExitCode
+outputAndExit :: (String, ExitCode) -> IO ()
+outputAndExit t = putStrLn (fst t) >> exitWith (snd t)
+
+-- Print the fst IO String and exit with ExitCode
+outputAndExit' :: (IO String, ExitCode) -> IO ()
+outputAndExit' t = fst t >>= putStrLn >> exitWith (snd t)
 
 -- Parse the commandline arguments and return one of:
 --   help
 --   version
 --   actual program output
 parseArgs :: [String] -> IO ()
-parseArgs ("-l":n:[])   = go n >>= putStrLn >> exit
-parseArgs ["-v"]        = putStrLn version >> exit
-parseArgs ["--version"] = putStrLn version >> exit
-parseArgs _             = putStrLn help >> exit
+parseArgs ("-l":n:[])   = outputAndExit' (go n)
+parseArgs ["-v"]        = outputAndExit (version, ExitSuccess)
+parseArgs ["--version"] = outputAndExit (version, ExitSuccess)
+parseArgs []            = outputAndExit (help, ExitSuccess)
+parseArgs ["-h"]        = outputAndExit (help, ExitSuccess)
+parseArgs ["--help"]    = outputAndExit (help, ExitSuccess)
+parseArgs _             = outputAndExit (help, ExitFailure 1)
 
 -- Yields a random char from the validChars list.
 randChar :: IO Char
@@ -56,4 +67,4 @@ validChars = "abcdefghjkmnpqqrstuvxyzABCDEFGHJKLMNPQRSTUVXYZ123456789_-!#=+/"
 
 -- Print the version
 version :: String
-version = "0.0.2"
+version = "0.0.3"
