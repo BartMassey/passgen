@@ -11,8 +11,8 @@ main = getArgs >>= parseArgs
 exit :: IO a
 exit = exitSuccess
 
--- Generate an x long password. The initial s String is appended to the
--- password.
+-- Generate a random n long IO String. The s IO String is appended to the end
+-- result.
 generatePassword :: Int -> IO String -> IO String
 generatePassword n s
   | n < 1 = s
@@ -25,18 +25,18 @@ help = "Usage: passgen OPTION\n" ++
        "  -h this help text\n" ++
        "  -v version of the program"
 
--- Return "Bad input" if String cannot be interpreted as an Int, else call
--- generatePassword.
+-- Call generatePassword with s read as an Int.
+-- Return help and exit with failure if s cannot be read as an Int.
 go :: String -> (IO String, ExitCode)
 go s = case reads s :: [(Int, String)] of
         [(n, _)] -> (generatePassword n (return ""), ExitSuccess)
         _ -> (return help, ExitFailure 1)
 
--- Print the fst String and exit with ExitCode
+-- Print the String and exit with ExitCode
 outputAndExit :: (String, ExitCode) -> IO ()
 outputAndExit t = putStrLn (fst t) >> exitWith (snd t)
 
--- Print the fst IO String and exit with ExitCode
+-- Print the IO String and exit with ExitCode
 outputAndExit' :: (IO String, ExitCode) -> IO ()
 outputAndExit' t = fst t >>= putStrLn >> exitWith (snd t)
 
@@ -55,11 +55,7 @@ parseArgs _             = outputAndExit (help, ExitFailure 1)
 
 -- Yields a random char from the validChars list.
 randChar :: IO Char
-randChar = fmap (validChars !!) randNum
-
--- Yields a random integer in the 0 .. length validChars range.
-randNum :: IO Int
-randNum = getStdRandom (randomR (0, (length validChars) - 1))
+randChar = fmap (validChars !!) $ getStdRandom (randomR (0, (length validChars) - 1))
 
 -- A list of valid characters
 validChars :: String
