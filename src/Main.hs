@@ -7,6 +7,10 @@ import System.Random
 
 main = getArgs >>= parseArgs
 
+-- A list of valid characters
+charPool :: String
+charPool = "abcdefghjkmnpqqrstuvxyzABCDEFGHJKLMNPQRSTUVXYZ123456789_-!#=+/"
+
 -- Take a String number, read it as an Int and return a random password of that
 -- length alongside an ExitCode.
 -- Returns one of:
@@ -48,7 +52,7 @@ parseArgs _             = outputAndExit (help, ExitFailure 1)
 
 -- Yields a random char from the validChars list
 randChar :: IO Char
-randChar = (validChars !!) <$> getStdRandom (randomR (0, (length validChars) - 1))
+randChar = (validChars !!) <$> getStdRandom (randomR (0, (length charPool) - 1))
 
 -- Generate a 'n' long random IO String.
 -- The 's' IO String is appended to the end result.
@@ -57,10 +61,6 @@ randString n s
   | n < 1 = s
   | otherwise = randString (n -1) (liftA2 (:) randChar s)
 
--- A list of valid characters
-validChars :: String
-validChars = "abcdefghjkmnpqqrstuvxyzABCDEFGHJKLMNPQRSTUVXYZ123456789_-!#=+/"
-
 -- Print the version
 version :: String
-version = "0.0.5"
+version = "0.0.6"
