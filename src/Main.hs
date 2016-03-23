@@ -7,7 +7,7 @@ import System.Random
 
 main = getArgs >>= parseArgs
 
--- A list of valid characters
+-- The valid characters. The password will be constructed from this pool
 charPool :: String
 charPool = "abcdefghjkmnpqqrstuvxyzABCDEFGHJKLMNPQRSTUVXYZ123456789_-!#=+/"
 
@@ -22,7 +22,7 @@ generatePassword s = case reads s :: [(Int, String)] of
   [(n, _)] -> (randString n (return ""), ExitSuccess)
   _ -> (return help, ExitFailure 1)
 
--- Print the help text.
+-- Print the help text
 help :: String
 help = "Usage: passgen OPTION\n" ++
        "  -l x outputs a random password of x length\n" ++
