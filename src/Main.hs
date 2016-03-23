@@ -7,10 +7,6 @@ import System.Random
 
 main = getArgs >>= parseArgs
 
--- Exit with success.
-exit :: IO a
-exit = exitSuccess
-
 -- Generate a random n long IO String. The s IO String is appended to the end
 -- result.
 generatePassword :: Int -> IO String -> IO String
@@ -63,4 +59,4 @@ validChars = "abcdefghjkmnpqqrstuvxyzABCDEFGHJKLMNPQRSTUVXYZ123456789_-!#=+/"
 
 -- Print the version
 version :: String
-version = "0.0.3"
+version = "0.0.4"
