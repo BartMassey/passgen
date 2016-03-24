@@ -4,10 +4,13 @@
 import Control.Monad
 import Data.Char
 import Data.List
+import Data.Version
 import System.Console.ParseArgs
 import System.Exit
 import System.Random
 import Text.Printf
+
+import qualified Paths_passgen as P
 
 data Option = OptionVersion | OptionHelp | OptionLength
             deriving (Ord, Eq, Show)
@@ -59,4 +62,5 @@ randString n = replicateM n randChar
 
 -- Print the version
 version :: String
-version = "0.0.6"
+version =
+    intersperse '.' $ map intToDigit $ versionBranch P.version
