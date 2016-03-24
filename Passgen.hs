@@ -4,9 +4,12 @@
 import Control.Monad
 import Data.Char
 import Data.List
+import Data.Version
 import System.Environment
 import System.Exit
 import System.Random
+ 
+import qualified Paths_passgen as P
 
 main :: IO ()
 main = getArgs >>= parseArgs
@@ -62,4 +65,5 @@ randString n = replicateM n randChar
 
 -- Print the version
 version :: String
-version = "0.0.6"
+version =
+    intersperse '.' $ map intToDigit $ versionBranch P.version

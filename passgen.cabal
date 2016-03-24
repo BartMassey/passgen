@@ -1,5 +1,5 @@
 name:                passgen
-version:             0.1.0.0
+version:             0.0.6
 synopsis:            Simple password generator. Not cryptographically safe.
 description:         Please see README.md
 homepage:            http://github.com/ThomasLocke/passgen#readme
