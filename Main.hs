@@ -1,6 +1,8 @@
 module Main where
 
 import Control.Monad
+import Data.Char
+import Data.List
 import System.Environment
 import System.Exit
 import System.Random
@@ -10,7 +12,10 @@ main = getArgs >>= parseArgs
 
 -- The valid characters. The password will be constructed from this pool
 validChars :: String
-validChars = "abcdefghjkmnpqqrstuvxyzABCDEFGHJKLMNPQRSTUVXYZ123456789_-!#=+/"
+validChars =
+    alphabetics ++ map toUpper alphabetics ++ ['1'..'9'] ++ "_-!#=+/"
+    where
+      alphabetics = ['a' .. 'z'] \\ ['i', 'o', 'w'] 
 
 -- The help text
 help :: String
