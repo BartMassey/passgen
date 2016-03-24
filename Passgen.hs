@@ -1,3 +1,6 @@
+-- Copyright © 2016 Thomas Løcke
+-- Password Generator
+
 import Control.Monad
 import Data.Char
 import Data.List
