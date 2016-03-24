@@ -51,6 +51,7 @@ parseArgs ["-h"]        = outputAndExit (help, ExitSuccess)
 parseArgs ["--help"]    = outputAndExit (help, ExitSuccess)
 parseArgs _             = outputAndExit (help, ExitFailure 1)
 
+-- Generate a random valid Char.
 randChar :: IO Char
 randChar = (validChars !!) <$> randomRIO (0, length validChars - 1)
 
