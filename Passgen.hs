@@ -46,7 +46,7 @@ main = do
 
 -- Take a [Int] and produce a String by mapping each Int to validChars
 numListToString :: [Int] -> String
-numListToString = map $ (!!) validChars
+numListToString = map (validChars !!)
 
 -- Produce a random number
 randNum :: (RandomGen g) => Rand g Int
