@@ -41,16 +41,14 @@ main = do
   when (gotArg args OptionHelp) $ do
     putStrLn (argsUsage args)
     exitSuccess
-  nl <- replicateM (getRequiredArg args OptionLength) $ evalRandIO $ randNum
-  putStrLn $ numListToString nl
+  pw <- evalRandIO $ randString $ getRequiredArg args OptionLength
+  putStrLn pw
 
--- Take a [Int] and produce a String by mapping each Int to validChars
-numListToString :: [Int] -> String
-numListToString = map (validChars !!)
-
--- Produce a random number
-randNum :: (RandomGen g) => Rand g Int
-randNum = getRandomR (0, length validChars - 1)
+-- Produce a random String of given length
+randString :: (RandomGen g) => Int -> Rand g String
+randString n = do
+  indices <- replicateM n $ getRandomR (0, length validChars - 1)
+  return $ map (validChars !!) indices
 
 -- The valid characters. The password will be constructed from this pool
 validChars :: String
